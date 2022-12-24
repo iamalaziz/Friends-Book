@@ -10,7 +10,7 @@
 
 <img alt="Screen Shot 2022-12-24 at 9 08 48 PM" src="https://user-images.githubusercontent.com/81867375/209435694-833bf260-842f-4951-8efe-f2ec3d912572.png">
 
-**Create button let the user to create new userData. There is a button to close the *Add User* window.**
+**Create button lets user to create new userData. There is a button to close the *Add User* window.**
 
 ## 2. Update
 
