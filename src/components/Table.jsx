@@ -6,6 +6,7 @@ import AddNewRow from "./AddNewRow";
 import { UsersContext } from "../context/context";
 import UpdateUser from "./UpdateUser";
 // import Mobile from "./Mobile/Mobile";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 const Table = () => {
   const [
@@ -34,6 +35,17 @@ const Table = () => {
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
+  const [usersTable, updateUsersTable] = useState(users);
+
+  function handleOnDragEnd(result) {
+    if (!result.destination) return;
+
+    const items = Array.from(usersTable);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    updateUsersTable(items);
+  }
   return (
     <div className="table">
       <div className="nav">
@@ -58,7 +70,9 @@ const Table = () => {
             <th>
               <input
                 type="checkbox"
-                checked={users.filter(user => user?.checked !== true).length < 1}
+                checked={
+                  users.filter((user) => user?.checked !== true).length < 1
+                }
                 onChange={(e) => selectAll(e.target.checked)}
               />
             </th>
@@ -70,49 +84,74 @@ const Table = () => {
             <th>Settings</th>
           </tr>
         </thead>
-        <tbody>
-          {toggleAdd === true && <AddNewRow setToggleAdd={setToggleAdd} />}
-          {users.map((user, index) => {
-            return (
-              <>
-                {user.id === editID ? (
-                  <UpdateUser user={user} setEditID={setEditID} />
-                ) : (
-                  <tr key={user.id}>
-                    <td>
-                      <input
-                        type="checkbox"
-                        checked={user.checked}
-                        onChange={() => handleSelection(user.id)}
-                      />
-                    </td>
-                    <td>{user.id}</td>
-                    <td>{user.userName}</td>
-                    <td>{user.email}</td>
-                    <td>{user.birthDate}</td>
-                    <td>{user.phone}</td>
-                    <td>
-                      <div className="settings">
-                        <i
-                          className="btn btn--edit"
-                          onClick={() => setEditID(user.id)}
-                        >
-                          <CiEdit />
-                        </i>
-                        <i
-                          className="btn btn--delete"
-                          onClick={() => deleteUser(user.id)}
-                        >
-                          <RiDeleteBin6Line />
-                        </i>
-                      </div>
-                    </td>
-                  </tr>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
+          <Droppable droppableId="usersTable">
+            {(provided) => (
+              <tbody {...provided.droppableProps} ref={provided.innerRef}>
+                {toggleAdd === true && (
+                  <AddNewRow setToggleAdd={setToggleAdd} />
                 )}
-              </>
-            );
-          })}
-        </tbody>
+                {usersTable.map((user, index) => {
+                  return (
+                    <>
+                      {user.id === editID ? (
+                        <UpdateUser
+                          user={user}
+                          keyID={editID}
+                          setEditID={setEditID}
+                        />
+                      ) : (
+                        <Draggable
+                          key={user.id}
+                          draggableId={user.id.toString()}
+                          index={index}
+                        >
+                          {(provided) => (
+                            <tr
+                              ref={provided.innerRef}
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                            >
+                              <td>
+                                <input
+                                  type="checkbox"
+                                  checked={user.checked}
+                                  onChange={() => handleSelection(user.id)}
+                                />
+                              </td>
+                              <td>{user.id}</td>
+                              <td>{user.userName}</td>
+                              <td>{user.email}</td>
+                              <td>{user.birthDate}</td>
+                              <td>{user.phone}</td>
+                              <td>
+                                <div className="settings">
+                                  <i
+                                    className="btn btn--edit"
+                                    onClick={() => setEditID(user.id)}
+                                  >
+                                    <CiEdit />
+                                  </i>
+                                  <i
+                                    className="btn btn--delete"
+                                    onClick={() => deleteUser(user.id)}
+                                  >
+                                    <RiDeleteBin6Line />
+                                  </i>
+                                </div>
+                              </td>
+                              {provided.placeholder}
+                            </tr>
+                          )}
+                        </Draggable>
+                      )}
+                    </>
+                  );
+                })}
+              </tbody>
+            )}
+          </Droppable>
+        </DragDropContext>
       </table>
 
       {/*   <Mobile />

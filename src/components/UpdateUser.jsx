@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { UsersContext } from "../context/context";
 
-const UpdateUser = ({ user, setEditID }) => {
+const UpdateUser = ({ user, keyID, setEditID }) => {
   const [users, setUsers] = useContext(UsersContext);
   const [editUser, setEditUser] = useState({ ...user });
 
@@ -21,7 +21,7 @@ const UpdateUser = ({ user, setEditID }) => {
   };
 
   return (
-    <tr className="add-row">
+    <tr className="add-row" key={keyID}>
       <td></td>
       <td>#</td>
       <td>
@@ -58,13 +58,13 @@ const UpdateUser = ({ user, setEditID }) => {
       </td>
       <td>
         <div className="create-cell">
-          <button className="btn create-btn" onClick={() => handleUpdate(editUser.id)}>
+          <button
+            className="btn create-btn"
+            onClick={() => handleUpdate(editUser.id)}
+          >
             Update
           </button>
-          <button
-            className="btn cancel-btn"
-            onClick={() => setEditID(null)}
-          >
+          <button className="btn cancel-btn" onClick={() => setEditID(null)}>
             Cancel
           </button>
         </div>
