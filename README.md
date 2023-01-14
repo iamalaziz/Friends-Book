@@ -2,14 +2,14 @@
 
 > This app can be used for different purposes. You can use it as a Contact Book, Birthdays' List, Todo App.
 
-1. Update             ✅
-2. Delete             ✅
-3. Create             ✅
-3. localStorage       ✅
-4. UI                 ✅
-5. Group Deletion     ✅
-6. Responsiveness     ✅
-7. Context API        ✅
+1. ✅Update             
+2. ✅Delete             
+3. ✅Create             
+3. ✅localStorage       
+4. ✅UI                 
+5. ✅Group Deletion     
+6. ✅Responsiveness     
+7. ✅Context API        
 
 
 ## 1. Main UI
@@ -41,4 +41,7 @@
 ## 5. Selection
 
 <img width="1261" alt="selection" src="https://user-images.githubusercontent.com/81867375/209444806-951e7ce6-f779-4b38-97de-d9d75d05bee5.png">
+
+
+
 

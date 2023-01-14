@@ -1,0 +1,28 @@
+.mobile {
+  padding: 0 1rem;
+  &__user-list {
+    .user {
+      margin: .7rem 0;
+      &__heading {
+        font-size: 1.2rem;
+        .num {
+          font-size: 1rem;
+          margin-right: .7rem;
+        }
+      }
+      &__info {
+        margin: 1rem;
+        .data {
+          display: flex;
+          margin-left: 1.5rem;
+          &__cell {
+            font-size: 1rem;
+            &--name {
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+}

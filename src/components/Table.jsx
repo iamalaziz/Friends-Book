@@ -5,12 +5,22 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import AddNewRow from "./AddNewRow";
 import { UsersContext } from "../context/context";
 import UpdateUser from "./UpdateUser";
+// import Mobile from "./Mobile/Mobile";
 
 const Table = () => {
-  const [users, setUsers] = useContext(UsersContext);
+  const [
+    users,
+    setUsers,
+    isChecked,
+    setIsChecked,
+    deleteUser,
+    handleGroupDeletion,
+    handleSelection,
+    selectAll,
+  ] = useContext(UsersContext);
+
   const [toggleAdd, setToggleAdd] = useState(false);
   const [editID, setEditID] = useState(null);
-  const [isChecked, setIsChecked] = useState(false)
 
   useEffect(() => {
     const storedUsers = JSON.parse(localStorage.getItem("users"));
@@ -20,41 +30,10 @@ const Table = () => {
   }, []);
 
   useEffect(() => {
+    localStorage.setItem("isChecked", JSON.stringify(isChecked));
     localStorage.setItem("users", JSON.stringify(users));
   }, [users]);
 
-  const deleteUser = (id) => {
-    const updatedUsers = [...users].filter((user) => user.id !== id);
-    setUsers(updatedUsers);
-  };
-
-  const handleGroupDeletion = () => {
-    const updatedUsers = [...users].filter((user) => user.checked !== true);
-    if (updatedUsers.length === users.length) {
-      alert("Please, select users you want to delete!");
-    }
-    setUsers(updatedUsers);
-    setIsChecked(false);
-  };
-
-  const handleSelection = (id) => {
-    const updateSelected = [...users].map((user) => {
-      if (user.id === id) {
-        user = { ...user, checked: !user.checked };
-      }
-      return user;
-    });
-    setUsers(updateSelected);
-  };
-
-  const selectAll = (valueOfChecked) => {
-    setIsChecked(valueOfChecked)
-    const updateSelected = [...users].map((user) => {
-      return (user = { ...user, checked: valueOfChecked });
-    });
-    setUsers(updateSelected);
-  };
-  console.log(isChecked);
   return (
     <div className="table">
       <div className="nav">
@@ -72,14 +51,15 @@ const Table = () => {
           Delete
         </button>
       </div>
+
       <table className="fields">
         <thead>
           <tr>
             <th>
               <input
                 type="checkbox"
-                checked={isChecked}
-                onClick={(e) => selectAll(e.target.checked)}
+                checked={users.filter(user => user?.checked !== true).length < 1}
+                onChange={(e) => selectAll(e.target.checked)}
               />
             </th>
             <th>#</th>
@@ -106,7 +86,7 @@ const Table = () => {
                         onChange={() => handleSelection(user.id)}
                       />
                     </td>
-                    <td>{index + 1}</td>
+                    <td>{user.id}</td>
                     <td>{user.userName}</td>
                     <td>{user.email}</td>
                     <td>{user.birthDate}</td>
@@ -134,7 +114,9 @@ const Table = () => {
           })}
         </tbody>
       </table>
-      {users.length === 0 && <h2 className="empty-text">Empty</h2>}
+
+      {/*   <Mobile />
+      {users.length === 0 && <h2 className="empty-text">Empty</h2>} */}
     </div>
   );
 };

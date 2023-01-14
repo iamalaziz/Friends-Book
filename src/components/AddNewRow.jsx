@@ -1,11 +1,9 @@
-import { useContext, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import "../stylesheet/_add-row.scss";
 import { UsersContext } from "../context/context";
-import { IoIosCloseCircleOutline } from "react-icons/io";
 
 const AddNewRow = ({ setToggleAdd }) => {
   const [users, setUsers] = useContext(UsersContext);
-
   const [newUser, setNewUser] = useState({
     id: null,
     userName: "",
@@ -13,10 +11,16 @@ const AddNewRow = ({ setToggleAdd }) => {
     birthDate: "",
     phone: "",
   });
+
   const handleInput = (e) => {
     const { name, value } = e.target;
-    setNewUser((prev) => ({ ...prev, id: new Date().getTime(), [name]: value }));
+    setNewUser((prev) => ({
+      ...prev,
+      id: new Date().getTime(),
+      [name]: value,
+    }));
   };
+
   const handleSubmit = () => {
     setUsers((prev) => [...users, newUser]);
     setNewUser({
@@ -30,11 +34,7 @@ const AddNewRow = ({ setToggleAdd }) => {
 
   return (
     <tr className="add-row">
-      <td onClick={() => setToggleAdd(false)}>
-        <IoIosCloseCircleOutline
-          style={{ fontSize: "25px", marginLeft: ".7rem" }}
-        />
-      </td>
+      <td></td>
       <td>{users.length + 1}</td>
       <td>
         <input
@@ -69,9 +69,17 @@ const AddNewRow = ({ setToggleAdd }) => {
         />
       </td>
       <td>
-        <button className="create-btn" onClick={handleSubmit}>
-          Create
-        </button>
+        <div className="create-cell">
+          <button className="btn create-btn" onClick={handleSubmit}>
+            Create
+          </button>
+          <button
+            className="btn cancel-btn"
+            onClick={() => setToggleAdd(false)}
+          >
+            Cancel
+          </button>
+        </div>
       </td>
     </tr>
   );
